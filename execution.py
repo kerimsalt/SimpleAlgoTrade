@@ -5,9 +5,9 @@ import hashlib
 import base64
 import json
 
-# BtcTurk API Keys (replace with your actual keys)
-API_KEY = "your_api_key"
-API_SECRET = "your_api_secret"
+# Ask user for API credentials
+API_KEY = input("Enter your BtcTurk API Key: ").strip()
+API_SECRET = input("Enter your BtcTurk API Secret: ").strip()
 
 # Base API URL
 BASE_URL = "https://api.btcturk.com/api/v2"
@@ -30,6 +30,13 @@ def get_headers():
         "X-Signature": signature_b64,
         "Content-Type": "application/json"
     }
+
+
+def test_api():
+    url = "https://api.btcturk.com/api/v2/users/balances"
+    headers = get_headers()  # Function from previous script
+    response = requests.get(url, headers=headers)
+    print(response.json())
 
 
 # Function to get account balance
@@ -113,6 +120,9 @@ def buy_bitcoin_with_try(amount_in_try, pair="BTC_TRY"):
 
 # Example Usage
 if __name__ == "__main__":
+    # Test API connection
+    test_api()
+
     # Get balance
     balance = get_balance()
     print(json.dumps(balance, indent=4))
@@ -120,6 +130,9 @@ if __name__ == "__main__":
     # Get order book
     order_book = get_order_book()
     print(json.dumps(order_book, indent=4))
+
+    # Place a market order (buy BTC worth of 30 TRY)
+    buy_bitcoin_with_try(amount_in_try=101)
 
     # Place a market order (buy 0.001 BTC)
     # Adjust price accordingly
