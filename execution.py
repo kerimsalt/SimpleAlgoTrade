@@ -75,6 +75,42 @@ def place_order(order_type, price, amount, pair="BTC_TRY"):
     return response.json()
 
 
+# Function to get the latest market price of BTC
+def get_latest_price(pair="BTC_TRY"):
+    url = f"{BASE_URL}/ticker?pairSymbol={pair}"
+    response = requests.get(url)
+    data = response.json()
+
+    if "data" in data:
+        return float(data["data"][0]["last"])  # Get the latest price
+    return None
+
+
+# Function to place a market buy order with a specific TRY amount
+def buy_bitcoin_with_try(amount_in_try, pair="BTC_TRY"):
+    latest_price = get_latest_price(pair)
+
+    if latest_price is None:
+        print("Error fetching BTC price.")
+        return
+
+    btc_amount = amount_in_try / latest_price  # Convert TRY to BTC
+    print(f"Buying {btc_amount:.8f} BTC for {amount_in_try} TRY at "
+          f"{latest_price} TRY/BTC")
+
+    url = f"{BASE_URL}/order"
+    data = {
+        "price": latest_price,  # Use current price
+        "quantity": round(btc_amount, 8),  # Round BTC amount to 8 decimals
+        "orderMethod": "market",
+        "orderType": 0,  # 0 for Buy
+        "pairSymbol": pair
+    }
+
+    response = requests.post(url, headers=get_headers(), json=data)
+    print(json.dumps(response.json(), indent=4))
+
+
 # Example Usage
 if __name__ == "__main__":
     # Get balance
