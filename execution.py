@@ -12,6 +12,7 @@ API_SECRET = "your_api_secret"
 # Base API URL
 BASE_URL = "https://api.btcturk.com/api/v2"
 
+
 # Function to generate authentication headers
 def get_headers():
     timestamp = str(int(time.time() * 1000))
@@ -30,17 +31,20 @@ def get_headers():
         "Content-Type": "application/json"
     }
 
+
 # Function to get account balance
 def get_balance():
     url = f"{BASE_URL}/users/balances"
     response = requests.get(url, headers=get_headers())
     return response.json()
 
+
 # Function to get order book (market prices)
 def get_order_book(pair="BTC_TRY"):
     url = f"{BASE_URL}/orderbook?pairSymbol={pair}"
     response = requests.get(url)
     return response.json()
+
 
 # Function to place a market order
 def place_order(order_type, price, amount, pair="BTC_TRY"):
@@ -52,9 +56,10 @@ def place_order(order_type, price, amount, pair="BTC_TRY"):
         "orderType": order_type,  # 0 for buy, 1 for sell
         "pairSymbol": pair
     }
-    
+
     response = requests.post(url, headers=get_headers(), json=data)
     return response.json()
+
 
 # Example Usage
 if __name__ == "__main__":
@@ -67,5 +72,7 @@ if __name__ == "__main__":
     print(json.dumps(order_book, indent=4))
 
     # Place a market order (buy 0.001 BTC)
-    order_response = place_order(order_type=0, price=500000, amount=0.001)  # Adjust price accordingly
-    print(json.dumps(order_response, indent=4))
+    # Adjust price accordingly
+
+    # order_response = place_order(order_type=0, price=500000, amount=0.001)
+    # print(json.dumps(order_response, indent=4))
