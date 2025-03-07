@@ -48,6 +48,20 @@ def get_order_book(pair="BTC_TRY"):
 
 # Function to place a market order
 def place_order(order_type, price, amount, pair="BTC_TRY"):
+    """
+    Sends a POST request with trade details.
+    Uses authentication (get_headers()) to ensure the request is authorized.
+
+    Args:
+        order_type (_type_): 0 for Buy, 1 for Sell
+        price (_type_): Price to buy/sell at (use None for market orders).
+        amount (_type_): Quantity of the asset to trade.
+        pair (str, optional): Trading pair
+        (default: "BTC_TRY" for Bitcoin/Turkish Lira). Defaults to "BTC_TRY".
+
+    Returns:
+        _type_: _description_
+    """
     url = f"{BASE_URL}/order"
     data = {
         "price": price,  # Set price for limit orders
